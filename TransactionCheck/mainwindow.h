@@ -31,6 +31,9 @@ private:
 
     QList<Transaction> loadTransactions(const QString &filePath);
     void displayTransactions(const QList<Transaction> &transactions);
+
+    void highlightIncorrectHashes(QList<Transaction> &transactions);
+    QString calculateSHA256(const QString &data);
 };
 
 #endif // MAINWINDOW_H
