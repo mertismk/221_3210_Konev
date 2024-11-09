@@ -13,7 +13,13 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowTitle("Проверятель транзакций");
+    for (int i = 0; i < ui->tableWidget->columnCount(); ++i) {
+        ui->tableWidget->horizontalHeader()->setSectionResizeMode(i, QHeaderView::Stretch);
+    }
+
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
+
     QList<Transaction> transactions = loadTransactions("../../../../../transactions.txt");
     displayTransactions(transactions);
     highlightIncorrectHashes(transactions);
@@ -90,6 +96,11 @@ void MainWindow::highlightIncorrectHashes(QList<Transaction> &transactions) {
 
 void MainWindow::onButtonClicked()
 {
-    qDebug() << "я кнопка";
+    QString fileName = QFileDialog::getOpenFileName(this, "Выберите файл транзакций", "", "Text Files (*.txt)");
+    if (!fileName.isEmpty()) {
+        QList<Transaction> transactions = loadTransactions(fileName);
+        displayTransactions(transactions);
+        highlightIncorrectHashes(transactions);
+    }
 }
 
